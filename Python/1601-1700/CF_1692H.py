@@ -2,6 +2,12 @@
 import sys
 input = lambda: sys.stdin.readline().strip()
 
+'''NOTE
+This got hacked shortly after the round and I have not yet gotten around to 
+fixing it. Not sure what went wrong with the code. Hopefully will fix it soon.
+'''
+
+
 '''Idea
 PART 1
 Values can go up to 10^9 which is too big to initialize; use a hash
