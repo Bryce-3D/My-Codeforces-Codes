@@ -2,12 +2,6 @@
 import sys
 input = lambda: sys.stdin.readline().strip()
 
-'''NOTE
-This got hacked shortly after the round and I have not yet gotten around to 
-fixing it. Not sure what went wrong with the code. Hopefully will fix it soon.
-'''
-
-
 '''Idea
 PART 1
 Values can go up to 10^9 which is too big to initialize; use a hash
@@ -30,6 +24,31 @@ Now the max is the maximum sum of a (possibly empty) contiguous subarray of
 this + 1 (the starting point is a +1).
 Maximum contiguous subarray sum sounds like a Googleable thing.
 '''
+
+'''
+Hashbrown class made using the Splitmax64 hash.
+Credits to htns for telling me about it.
+'''
+
+#Cause someone decided to hack using hash abuse
+class Hashbrown:
+    def __init__(self, val):
+        self.val = val
+    
+    def __eq__(self, other):
+        if isinstance(other, Hashbrown):
+            return self.val == other.val
+        else:
+            return False
+    
+    def __hash__(self):
+        x = self.val
+        x += 0x9e3779b97f4a7c15
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb
+        return x ^ (x >> 31)
+
+
 
 #Given an array a, returns the list
 #   [max_sum, L, R]
@@ -70,18 +89,21 @@ for Homu in range(int(input())):
 
     indices_of = {}
     for i in range(n):
-        if a[i] not in indices_of:   #New element
-            indices_of[a[i]] = [i]
+        hashbrowned = Hashbrown(a[i])
+        if hashbrowned not in indices_of:   #New element
+            indices_of[hashbrowned] = [i]
         else:   #Existing element
-            indices_of[a[i]].append(i)
+            indices_of[hashbrowned].append(i)
 
     #Each element of best_per_guess if a list of the form
     #   [guess, best sum of this guess, left end, right end]
     best_per_guess = []
     
-    for guess in indices_of:
+    for hashbrowned_guess in indices_of:
         #Indices where the current guess appears
-        indices = indices_of[guess]
+        indices = indices_of[hashbrowned_guess]
+        #The actual value of the guess
+        guess = hashbrowned_guess.val
 
         #DEBUG ~~~~~~~
         #print(indices)
