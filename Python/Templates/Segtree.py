@@ -73,8 +73,8 @@ class Segtree:
             return self.seg[i]
         
         #Check intervals of children of seg[i]
-        l = self.span[2*i+1][0]     #Left end of left child
-        m = self.span[2*i+1][1]     #Border of left and right child
+        l = self.span[2*i+1][0]   #Left end of left child
+        m = self.span[2*i+1][1]   #Border of left and right child
         r = self.span[2*i+2][1]   #Right end of right child
         
         #If [L:R] is entirely in the left child of span[i]
